@@ -17,8 +17,8 @@ cmake .. \
   -DgRPC_RE2_PROVIDER=package \
   -DgRPC_SSL_PROVIDER=package \
   -DgRPC_ZLIB_PROVIDER=package
-
 make -j
 make install
+mv /opt/grpc/bin/protoc /opt/grpc/bin/protoc3
 
 
