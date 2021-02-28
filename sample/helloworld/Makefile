@@ -15,7 +15,7 @@ clean: clean_cpp clean_java clean_python clean_go clean_dart
 
 clean_cpp:
 	rm -fv cpp/greeter_client cpp/greeter_server \
-		cpp/greeter_async_client cpp/greeter_async_server
+		cpp/greeter_async_client cpp/greeter_async_client2 cpp/greeter_async_server
 
 protoc_cpp: helloworld.proto
 	protoc --cpp_out=cpp helloworld.proto
@@ -39,6 +39,13 @@ server_cpp: cpp/greeter_server.cc protoc_cpp
 client_async_cpp: cpp/greeter_async_client.cc protoc_cpp
 	c++ -o cpp/greeter_async_client -std=c++11 \
 		cpp/greeter_async_client.cc \
+		cpp/helloworld.grpc.pb.cc \
+		cpp/helloworld.pb.cc \
+		`pkg-config --cflags --libs protobuf grpc++`
+
+client_async2_cpp: cpp/greeter_async_client2.cc protoc_cpp
+	c++ -o cpp/greeter_async_client2 -std=c++11 \
+		cpp/greeter_async_client2.cc \
 		cpp/helloworld.grpc.pb.cc \
 		cpp/helloworld.pb.cc \
 		`pkg-config --cflags --libs protobuf grpc++`
