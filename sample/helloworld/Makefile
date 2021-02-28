@@ -14,18 +14,26 @@ dart:   add_person_dart   list_people_dart
 clean: clean_cpp clean_java clean_python clean_go clean_dart
 
 clean_cpp:
-	rm -fv cpp/add_person_cpp cpp/list_people_cpp cpp/*.data
+	rm -fv cpp/greeter_client cpp/greeter_server
 
 protoc_cpp: helloworld.proto
 	protoc --cpp_out=cpp helloworld.proto
 	protoc --grpc_out=cpp helloworld.proto --plugin=protoc-gen-grpc=`which grpc_cpp_plugin`
 
-greeter_client_cpp: cpp/greeter_client.cc protoc_cpp
-	c++ -std=c++11 cpp/greeter_client.cc cpp/helloworld.grpc.pb.cc -o cpp/greeter_client `pkg-config --cflags --libs protobuf grpc++`
+client_cpp: cpp/greeter_client.cc protoc_cpp
+	c++ -o cpp/greeter_client -std=c++11 \
+		cpp/greeter_client.cc \
+		cpp/helloworld.grpc.pb.cc \
+		cpp/helloworld.pb.cc \
+		`pkg-config --cflags --libs protobuf grpc++`
 
-greeter_server_cpp: cpp/list_people.cc protoc_cpp
-	pkg-config --cflags protobuf  # fails if protobuf is not installed
-	c++ -std=c++11 cpp/list_people.cc cpp/person.pb.cc -o cpp/list_people_cpp `pkg-config --cflags --libs protobuf`
+server_cpp: cpp/greeter_server.cc protoc_cpp
+	c++ -o cpp/greeter_server -std=c++11 \
+		cpp/greeter_server.cc \
+		cpp/helloworld.grpc.pb.cc \
+		cpp/helloworld.pb.cc \
+		-lgrpc++_reflection \
+		`pkg-config --cflags --libs protobuf grpc++`
 
 clean_java:
 	rm -rfv java/add_person_java java/list_people_java java/*.data java/*.class java/com/example/tutorial/*.class
