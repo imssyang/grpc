@@ -6,6 +6,15 @@ cmake .. \
   -DgRPC_INSTALL=ON \
   -DgRPC_BUILD_TESTS=OFF \
   -DCMAKE_INSTALL_PREFIX=/opt/grpc
+
+cmake .. \
+  -DgRPC_INSTALL=ON \
+  -DgRPC_BUILD_TESTS=OFF \
+  -DCMAKE_INSTALL_PREFIX=/opt/grpc \
+  -DgRPC_PROTOBUF_PROVIDER=package \
+  -DgRPC_SSL_PROVIDER=package \
+  -DgRPC_ZLIB_PROVIDER=package
+
 cmake .. \
   -DgRPC_INSTALL=ON \
   -DgRPC_BUILD_TESTS=OFF \
@@ -17,6 +26,7 @@ cmake .. \
   -DgRPC_RE2_PROVIDER=package \
   -DgRPC_SSL_PROVIDER=package \
   -DgRPC_ZLIB_PROVIDER=package
+
 make -j
 make install
 mv /opt/grpc/bin/protoc /opt/grpc/bin/protoc3
