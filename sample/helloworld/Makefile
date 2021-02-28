@@ -16,14 +16,14 @@ clean: clean_cpp clean_java clean_python clean_go clean_dart
 clean_cpp:
 	rm -fv cpp/add_person_cpp cpp/list_people_cpp cpp/*.data
 
-protoc_cpp: person.proto hello_service.proto
-	protoc --cpp_out=cpp person.proto hello_service.proto
+protoc_cpp: helloworld.proto
+	protoc --cpp_out=cpp helloworld.proto
+	protoc --grpc_out=cpp helloworld.proto --plugin=protoc-gen-grpc=`which grpc_cpp_plugin`
 
-add_person_cpp: cpp/add_person.cc protoc_cpp
-	pkg-config --cflags protobuf  # fails if protobuf is not installed
-	c++ -std=c++11 cpp/add_person.cc cpp/person.pb.cc -o cpp/add_person_cpp `pkg-config --cflags --libs protobuf`
+greeter_client_cpp: cpp/greeter_client.cc protoc_cpp
+	c++ -std=c++11 cpp/greeter_client.cc cpp/helloworld.grpc.pb.cc -o cpp/greeter_client `pkg-config --cflags --libs protobuf grpc++`
 
-list_people_cpp: cpp/list_people.cc protoc_cpp
+greeter_server_cpp: cpp/list_people.cc protoc_cpp
 	pkg-config --cflags protobuf  # fails if protobuf is not installed
 	c++ -std=c++11 cpp/list_people.cc cpp/person.pb.cc -o cpp/list_people_cpp `pkg-config --cflags --libs protobuf`
 
