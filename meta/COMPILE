@@ -5,17 +5,17 @@ mkdir build
 cmake .. \
   -DgRPC_INSTALL=ON \
   -DgRPC_BUILD_TESTS=OFF \
-  -DCMAKE_INSTALL_PREFIX=/opt/grpc
-
-cmake .. \
-  -DgRPC_INSTALL=ON \
-  -DgRPC_BUILD_TESTS=OFF \
-  -DCMAKE_INSTALL_PREFIX=/opt/grpc \
+  -DBUILD_SHARED_LIBS=ON \
   -DgRPC_PROTOBUF_PROVIDER=package \
   -DgRPC_SSL_PROVIDER=package \
-  -DgRPC_ZLIB_PROVIDER=package
+  -DgRPC_ZLIB_PROVIDER=package \
+  -DCMAKE_INSTALL_PREFIX=/opt/grpc \
+  -DProtobuf_INCLUDE_DIR=/opt/protobuf/include \
+  -DProtobuf_LIBRARY=/opt/protobuf/lib/libprotobuf.so \
+  -DProtobuf_PROTOC_LIBRARY=/opt/protobuf/lib/libprotoc.so \
+  -DZLIB_INCLUDE_DIR=/opt/zlib/include
 
-cmake .. \
+(maybe) cmake .. \
   -DgRPC_INSTALL=ON \
   -DgRPC_BUILD_TESTS=OFF \
   -DCMAKE_INSTALL_PREFIX=/opt/grpc \
@@ -29,6 +29,5 @@ cmake .. \
 
 make -j
 make install
-mv /opt/grpc/bin/protoc /opt/grpc/bin/protoc3
 
 
